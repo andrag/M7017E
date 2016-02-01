@@ -3,18 +3,25 @@
 <link>
     <meta charset="UTF-8">
     <title>Lab 1</title>
-    <link href="css/main.css" rel="stylesheet"></link>
+   <link href="css/main.css" rel="stylesheet"></link>
 </head>
 <body>
 
-<video id="webcam" autoplay muted></video>
-<video id="recorded" autoplay loop></video>
+    <h1>Laboration one: Video Capture</h1>
+    <h3>By Anders and Per</h3>
 
-<button id="recordbutton">Record</button>
-<button id="playbutton">Play</button>
-<button id="downloadbutton">Download</button>
 
-<script src="js/main.js"></script>
+    <video id="webcam" autoplay muted></video>
+    <video id="recorded" autoplay loop></video>
+
+    <div class="relative">
+        <button id="recordbutton">Record</button>
+        <button id="playbutton" disabled>Play</button>
+        <button id="downloadbutton" disabled>Download</button>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/adapter.js"></script>
 
 </body>
 </html>

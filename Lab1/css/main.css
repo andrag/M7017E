@@ -1,28 +1,38 @@
 @charset "utf-8";
 
 
-button{
-    margin: 0 3px 10px 0;
-    width: 99px;
-    padding-left: 2px;
-    padding-right: 2px;
+h1 {
+    font-family: "Franklin Gothic Book";
 }
 
-button:last-of-type {
-    margin: 0;
+div.relative {
+    position: relative;
+    left: 0px;
 }
+
+button {
+    background-color: darkslategray;
+    border: none;
+    : antiquewhite;
+    width: 100px;
+    padding:5px;
+}
+
+button:disabled {
+    background-color: gray;
+}
+
 
 video {
     height: 232px;
     margin: 0 12px 20px 0;
     vertical-align: top;
     width: calc(20em - 10px);
+    background-color: darkgray;
 }
 
-video:last-of-type {
-    margin: 0 0 20px 0;
-}
 
 video:#webcam {
     margin: 0 20px 20px 0;
 }
+
