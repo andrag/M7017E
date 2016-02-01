@@ -97,7 +97,7 @@ function startRec(){
         console.error('MediaRecorder exception: ', event);
         return;
     }
-    console.assert(mediaRecorder.state === 'inactivatae'); //Check if the media recorder is in the right state
+    console.assert(mediaRecorder.state === 'inactive'); //Check if the media recorder is in the right state
     mediaRecorder.onStop = handleStop;
     mediaRecorder.ondataavailable = handleDataAvailable;
     mediaRecorder.start();
