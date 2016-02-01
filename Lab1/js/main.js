@@ -33,10 +33,12 @@ downloadButton.onclick = download;
 
 //-------------------------------------Functions for getting the local media stream-------------------------------------
 
-//Prompt for the camera and/or mic
+//Use the right version of getUserMedia API depending on the browser used
 navigator.getUserMedia = navigator.getUserMedia ||
         navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
+
+//Prompt for permission to use webcam and/or mic depending on the constraints set above
 navigator.mediaDevices.getUserMedia(constraints)
     .then(function(stream) {
         console.log('getUserMedia() got stream: ', stream);
@@ -50,7 +52,10 @@ navigator.mediaDevices.getUserMedia(constraints)
 //Event listener for handling the source when opened
 mediaSource.addEventListener('sourceopen', onSourceOpen, false);
 
-//SuccesCallback of the mediaSource eventListener. Creates and adds a sourcebuffer of given MIME type to MediaSource.
+
+/*  SuccesCallback of the mediaSource eventListener.
+    Creates and adds a sourcebuffer of given MIME type to MediaSource.
+ */
 function onSourceOpen(event){
     console.log('MediaSource is open');
     sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vp8"');//Set MIME type
@@ -61,6 +66,10 @@ function onSourceOpen(event){
 
 //--------------------------------Functions for recording-----------------------------------------
 
+
+/* Toggles the text of the record button between 'Record' and 'Stop'
+    Calls startRec or stopRec depending on this text.
+ */
 function toggleRec(){
     if(recordButton.textContent === 'Record'){
         recordButton.textContent = 'Stop';
@@ -76,7 +85,9 @@ function toggleRec(){
     }
 }
 
-
+/*  Initiates the mediaRecorder with the stream and starts it.
+    Sets functions for stop events and handling the recorded data.
+ */
 function startRec(){
     try {
         recordedBlobs = [];
@@ -86,7 +97,7 @@ function startRec(){
         console.error('MediaRecorder exception: ', event);
         return;
     }
-    console.assert(mediaRecorder.state === 'inactive');
+    console.assert(mediaRecorder.state === 'inactivatae'); //Check if the media recorder is in the right state
     mediaRecorder.onStop = handleStop;
     mediaRecorder.ondataavailable = handleDataAvailable;
     mediaRecorder.start();
@@ -98,6 +109,8 @@ function handleStop(event){
     console.log('MediaRecorder stopped: ', event);
 }
 
+
+//Push the recorded data to the recordedBlobs array
 function handleDataAvailable(event){
     if(event.data && event.data.size > 0) {
         recordedBlobs.push(event.data)
@@ -121,17 +134,24 @@ function stopRec(){
 
 //------------------------------------Functions for playback and download--------------------------
 
+/** Creates a buffer and sets it as source for the recordedVideo HTML element.
+ *  The element is fed a URL object made from the blob buffer since FireFox cannot handle buffer objects ad source yet.
+ */
 function play() {
-
     var recordedVideoBuffer = new Blob(recordedBlobs);
-    //FireFox cannot yet handle buffer objects as source, feed it a URL.
     recordedVideo.src = window.URL.createObjectURL(recordedVideoBuffer);
 }
 
+
+/** This function creates a Blob with specified MIME type: webm format video.
+ *  A uri object is created from the blob and appended as a new invisible HTML element set
+ *  to be downloaded with the name recorded_video.webm. The temporary HTML element is removed
+ *  after a timeout set to 100 ms.
+ */
 function download() {
     var blob = new Blob(recordedBlobs, {type: 'video/webm'});
     var url = window.URL.createObjectURL(blob);
-    var a = document.createElement('a');
+    var a = document.createElement('a'); //Create a hyperlink
     a.style.display = 'none';
     a.href = url;
     a.download = 'recorded_video.webm';
